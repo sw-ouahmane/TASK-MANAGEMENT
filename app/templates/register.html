@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Register</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1>Register</h1>
+    <!-- Update the form to include enctype for file upload -->
+    <form action="/register" method="POST" enctype="multipart/form-data">
+        <label for="username">Nom</label>
+        <input type="text" name="username" id="username" required>
+
+        <label for="prenom">Prenom</label>
+        <input type="text" name="prenom" id="prenom" required>
+
+        <label for="matricule">Matricule:</label>
+        <input type="text" name="matricule" id="matricule" required>
+
+        <label for="fonction">Fonction</label>
+        <input type="text" name="fonction" id="fonction" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="phone">Phone:</label>
+        <input type="text" name="phone" id="phone" required>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+
+        <!-- Profile Image (optional) -->
+        <label for="profile_image">Profile Image (optional):</label>
+        <input type="file" name="profile_image" id="profile_image">
+
+        <input type="submit" value="Register">
+    </form>
+
+    <p>Already have an account? <a href="/login">Login here</a>.</p>
+</div>
+{% endblock %}

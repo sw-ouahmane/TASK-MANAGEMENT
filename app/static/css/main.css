@@ -1,0 +1,138 @@
+body,
+html {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.content {
+    margin: 0 auto;
+    width: 100%;
+    /* Ensure the content takes full available width */
+    max-width: 1200px;
+    /* Set a max-width if necessary */
+}
+
+
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    /* Center the table horizontally */
+    width: 100%;
+    /* Use full width of .content */
+    /* Optionally set max-width if needed */
+}
+
+td,
+th {
+    border: 1px solid #aaa;
+    text-align: center;
+    padding: 5px;
+}
+
+th {
+    height: 30px;
+}
+
+.form {
+    margin-top: 20px;
+    text-align: center;
+    /* Center the form elements */
+}
+
+#content {
+    width: 70%;
+}
+
+.form {
+    margin-top: 20px;
+    text-align: center;
+    /* Center align the form within its container */
+}
+
+.form form {
+    display: flex;
+    /* Use flexbox for inline layout */
+    flex-wrap: nowrap;
+    /* Prevent wrapping */
+    justify-content: center;
+    /* Center align items horizontally */
+    align-items: center;
+    /* Vertically center items */
+    gap: 5px;
+    /* Space between inputs */
+    flex-direction: row;
+    /* Ensure items are laid out in a row */
+    overflow-x: auto;
+    /* Allow horizontal scrolling if necessary */
+}
+
+.form form input {
+    padding: 8px;
+    /* Add padding inside the input fields */
+    flex: 1;
+    /* Allow inputs to grow equally */
+    min-width: 40px;
+    /* Minimum width for each input */
+    max-width: 80px;
+    /* Maximum width for each input */
+}
+
+.user-info {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    width: 150px;
+    height: 150px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #007bff;
+    color: white;
+}
+
+footer p {
+    margin-bottom: 10px;
+}
+
+footer .footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+footer .footer-links li {
+    display: inline;
+    margin: 0 15px;
+}
+
+footer .footer-links a {
+    color: white;
+    text-decoration: none;
+}
+
+footer .footer-links a:hover {
+    text-decoration: underline;
+}
+
+.back-to-top {
+    display: block;
+    margin-top: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+.back-to-top:hover {
+    text-decoration: underline;
+}

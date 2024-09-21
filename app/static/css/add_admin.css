@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    /* Light background color */
+}
+
+.form-container {
+    max-width: 600px;
+    /* Maximum width of the form */
+    margin: 50px auto;
+    /* Center the form */
+    padding: 20px;
+    /* Padding inside the container */
+    background-color: white;
+    /* White background for the form */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+}
+
+h1 {
+    text-align: center;
+    /* Center the heading */
+    margin-bottom: 20px;
+    /* Spacing below the heading */
+}
+
+label {
+    display: block;
+    /* Block display for labels */
+    margin-bottom: 5px;
+    /* Space below labels */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    /* Full width */
+    padding: 10px;
+    /* Padding inside input fields */
+    margin-bottom: 15px;
+    /* Spacing below input fields */
+    border: 1px solid #ccc;
+    /* Light border */
+    border-radius: 4px;
+    /* Rounded corners */
+}
+
+input[type="submit"] {
+    width: 100%;
+    /* Full width for button */
+    padding: 10px;
+    /* Padding inside button */
+    background-color: #007bff;
+    /* Bootstrap primary color */
+    color: white;
+    /* White text */
+    border: none;
+    /* No border */
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+    /* Darker blue on hover */
+}

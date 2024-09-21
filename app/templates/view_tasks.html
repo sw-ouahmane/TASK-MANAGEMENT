@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Tasks</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view_task.css') }}">
+</head>
+
+<body>
+    <h1>Tasks for {{ user.username }}</h1>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Phone:</strong> {{ user.phone }}</p>
+    <p><strong>Matricule:</strong> {{ user.matricule }}</p>
+
+    <h2>Tasks</h2>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Date d'Affectation</th>
+                <th>Shift</th>
+                <th>Poste</th>
+                <th>Navire</th>
+                <th>Marchandise</th>
+                <th>Nb CS/PCS</th>
+                <th>Unite</th>
+                <th>Raclage</th>
+                <th>Entered By</th>
+                <th>Validated By</th>
+                <th>Escale</th>
+                <th>Validate</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.date_created.strftime('%d/%m/%Y') }}</td>
+                <td>{{ task.shift }}</td>
+                <td>{{ task.poste }}</td>
+                <td>{{ task.navire }}</td>
+                <td>{{ task.marchandise }}</td>
+                <td>{{ task.nb_cs_pcs }}</td>
+                <td>{{ task.unite }}</td>
+                <td>{{ task.raclage }}</td>
+                <td>{{ task.user.username }}</td>
+                <td>{{ task.validated_by or 'Not validated yet' }}</td>
+                <td>
+                    <!-- Form for adding Escale -->
+                    <form action="{{ url_for('tasks.add_escale', task_id=task.id) }}" method="POST">
+                        <input type="text" name="Escale" placeholder="Enter numero d'escale"
+                            value="{{ task.Escale or '' }}">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </td>
+                <td>
+                    <!-- Validate button -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#remarkModal"
+                        data-action="validate" data-task-id="{{ task.id }}" {% if (task.status=='Validated' or
+                        task.status=='Rejected' ) and (task.validated_by !=current_user.username) and
+                        (current_user.matricule !='ADMIN0001' ) %}disabled{% endif %}>
+                        Validate
+                    </button>
+
+                    <!-- Reject button -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remarkModal"
+                        data-action="reject" data-task-id="{{ task.id }}" {% if (task.status=='Rejected' or
+                        task.status=='Validated' ) and (task.validated_by !=current_user.username) and
+                        (current_user.matricule !='ADMIN0001' ) %}disabled{% endif %}>
+                        Reject
+                    </button>
+                </td>
+                <td>{{ task.status or 'Att Validation' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="12">No tasks found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('admin.admin') }}" class="btn btn-secondary">Back to Admin Panel</a>
+
+    <!-- Modal for adding remarks -->
+    <div class="modal fade" id="remarkModal" tabindex="-1" role="dialog" aria-labelledby="remarkModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="remarkModalLabel">Add Remark</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="remarkForm" action="" method="post">
+                        <div class="form-group">
+                            <label for="remark">Remark</label>
+                            <textarea class="form-control" id="remark" name="remark" rows="3" required></textarea>
+                        </div>
+                        <input type="hidden" id="task-id" name="task_id" value="">
+                        <input type="hidden" id="action" name="action" value="">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to handle modal actions -->
+    <script src="{{ url_for('static', filename='js/view_tasks.js') }}"></script>
+
+</body>
+
+</html>

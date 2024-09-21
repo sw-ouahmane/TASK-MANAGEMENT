@@ -1,0 +1,251 @@
+/* ---------------------------------------------------
+   1. General Styles (Resets, Body, and Layout)
+--------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------------------------------
+   2. User Info Section
+--------------------------------------------------- */
+.user-info {
+    background-color: #eaeaea;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    /* New styles to move it to the top right corner */
+    position: fixed;
+    /* Sticks it to a fixed position */
+    top: 20px;
+    /* Adjusts the top position */
+    right: 20px;
+    /* Adjusts the right position */
+
+    width: 250px;
+    /* Set a fixed width */
+    text-align: center;
+    /* Centers the text and image inside */
+    z-index: 100;
+    /* Ensures it is on top of other elements */
+}
+
+.user-info h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.user-info img {
+    max-width: 150px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 15px auto;
+}
+
+.user-info p {
+    margin: 5px 0;
+    text-align: center;
+}
+
+
+
+/* ---------------------------------------------------
+   3. Table Styles
+--------------------------------------------------- */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f4f4f4;
+}
+
+.table td {
+    background-color: #fff;
+}
+
+.table a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.table a:hover {
+    text-decoration: underline;
+}
+
+/* ---------------------------------------------------
+   4. Form Styles
+--------------------------------------------------- */
+.form {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form .button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.form .button:hover {
+    background-color: #0056b3;
+}
+
+/* ---------------------------------------------------
+   5. Pagination
+--------------------------------------------------- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-link {
+    color: #007bff;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* ---------------------------------------------------
+   6. Modal
+--------------------------------------------------- */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.modal-header {
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-body {
+    padding: 15px;
+}
+
+.modal-footer {
+    text-align: right;
+}
+
+/* ---------------------------------------------------
+   7. Search Form
+--------------------------------------------------- */
+.search-form {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.search-form label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.search-form input,
+.search-form select {
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-form button {
+    padding: 5px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #0056b3;
+}
+
+/* ---------------------------------------------------
+   8. Footer Styles (if applicable)
+--------------------------------------------------- */
+footer {
+    text-align: center;
+    margin-top: 120px;
+    padding: 20px;
+    background-color: #007bff;
+    color: white;
+}
+
+footer p {
+    margin-bottom: 10px;
+}
+
+footer .footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+footer .footer-links li {
+    display: inline;
+    margin: 0 15px;
+}
+
+footer .footer-links a {
+    color: white;
+    text-decoration: none;
+}
+
+footer .footer-links a:hover {
+    text-decoration: underline;
+}
+
+.back-to-top {
+    display: block;
+    margin-top: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+.back-to-top:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Update Task</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Update Task</h1>
+
+    <div class="form">
+        <form action="/update/{{ task.id }}" method="POST">
+            <table class="update-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Shift</th>
+                        <th>Poste</th>
+                        <th>Navire</th>
+                        <th>Marchandise</th>
+                        <th>Nb de cs / pcs</th>
+                        <th>Unité</th>
+                        <th>Raclage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="date" value="{{ task.date }}"></td>
+                        <td><input type="text" name="shift" value="{{ task.shift }}"></td>
+                        <td><input type="text" name="poste" value="{{ task.poste }}"></td>
+                        <td><input type="text" name="navire" value="{{ task.navire }}"></td>
+                        <td><input type="text" name="marchandise" value="{{ task.marchandise }}"></td>
+                        <td><input type="text" name="nb_cs_pcs" value="{{ task.nb_cs_pcs }}"></td>
+                        <td><input type="text" name="unite" value="{{ task.unite }}"></td>
+                        <td><input type="text" name="raclage" value="{{ task.raclage }}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+</div>
+{% endblock %}

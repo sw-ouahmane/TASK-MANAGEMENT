@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Add New Affectation</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_affectation.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Add New Affectation</h1>
+
+    <form action="{{ url_for('tasks.add_affectation') }}" method="POST">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Shift</th>
+                    <th>Poste</th>
+                    <th>Navire</th>
+                    <th>Marchandise</th>
+                    <th>Nb de cs / pcs</th>
+                    <th>Unité</th>
+                    <th>Raclage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" name="date" placeholder="Date" required></td>
+                    <td><input type="text" name="shift" placeholder="Shift"></td>
+                    <td><input type="text" name="poste" placeholder="Poste"></td>
+                    <td><input type="text" name="navire" placeholder="Navire"></td>
+                    <td><input type="text" name="marchandise" placeholder="Marchandise"></td>
+                    <td><input type="text" name="nb_cs_pcs" placeholder="Nb de cs / pcs"></td>
+                    <td><input type="text" name="unite" placeholder="Unité"></td>
+                    <td><input type="text" name="raclage" placeholder="Raclage"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Add Task">
+    </form>
+
+
+    <p style="text-align: center"><a href="{{ url_for('main.index') }}" class="button">Back to Tasks</a></p>
+</div>
+{% endblock %}
