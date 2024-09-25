@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     is_approved = db.Column(db.Boolean, default=False)
     tasks = db.relationship('Todo', backref='user',
                             lazy=True, cascade="all, delete-orphan")
+    is_pending = db.Column(db.Boolean, default=True)
 
     def update_last_seen(self):
         self.last_update = datetime.utcnow()

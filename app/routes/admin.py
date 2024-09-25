@@ -1,3 +1,6 @@
+from app.models import db
+from app.models import Todo, User
+from flask import request, render_template, url_for
 from flask_login import current_user, login_required
 from flask import Flask, render_template, url_for, request, redirect, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -18,17 +21,29 @@ def admin():
     if not current_user.is_admin:
         return redirect(url_for('auth.login'))
 
-    # Fetch all users who are not admins and are awaiting approval
     pending_users = User.query.filter_by(
         is_admin=False, is_approved=False).all()
-
-    # Fetch approved users who are normal users (not admins)
     normal_users = User.query.filter_by(is_admin=False, is_approved=True).all()
-
-    # Fetch all admins
     admins = User.query.filter_by(is_admin=True).all()
 
-    return render_template('admin.html', admins=admins, normal_users=normal_users, pending_users=pending_users)
+    # Get search parameter
+    prenom = request.args.get('prenom', '')
+
+    # Get current page and set tasks per page
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+
+    # Start with the base query
+    query = Todo.query.join(User).filter(Todo.user_id == User.id)
+
+    # Filter by prenom (from User model)
+    if prenom:
+        query = query.filter(User.prenom.ilike(f'%{prenom}%'))
+
+    # Paginate the query
+    tasks = query.paginate(page=page, per_page=per_page)
+
+    return render_template('admin/admin.html', pending_users=pending_users, normal_users=normal_users, admins=admins, tasks=tasks)
 
 
 @bp.route('/delete_user/<int:id>')
@@ -112,7 +127,7 @@ def admin_change_password():
         except Exception as e:
             return f'There was an issue changing your password: {e}'
 
-    return render_template('admin_change_password.html')
+    return render_template('admin/admin_change_password.html')
 
 
 @bp.route('/admin/add_admin', methods=['GET', 'POST'])
@@ -168,7 +183,7 @@ def add_admin():
         except Exception as e:
             return f'There was an issue creating the admin: {e}'
 
-    return render_template('add_admin.html')
+    return render_template('admin/add_admin.html')
 
 
 @bp.route('/admin/approve_user/<int:user_id>', methods=['POST'])
@@ -180,12 +195,16 @@ def approve_user(user_id):
     user = User.query.get_or_404(user_id)
     if request.form['action'] == 'approve':
         user.is_approved = True
+        user.is_pending = False  # Ensure they are no longer pending
         db.session.commit()
-        return redirect(url_for('admin.admin'))
+        # Stay on the pending users page after approval
+        # Update this line to remain on the same page
+        return redirect(url_for('admin.view_pending_users'))
     elif request.form['action'] == 'reject':
         db.session.delete(user)
         db.session.commit()
-        return redirect(url_for('admin.admin'))
+        # Remain on the same page
+        return redirect(url_for('admin.view_pending_users'))
 
 
 @bp.route('/add_shift/<int:user_id>', methods=['GET', 'POST'])
@@ -206,4 +225,47 @@ def add_shift(user_id):
         return redirect(url_for('admin.add_shift', user_id=user_id))
 
     # Handle GET request (e.g., display a form)
-    return render_template('admin.html', user=user)
+    return render_template('admin/admin.html', user=user)
+
+
+@bp.route('/view_admins')
+def view_admins():
+    admins = User.query.filter_by(is_admin=True).all()
+    return render_template('admin/admin_list.html', admins=admins)
+
+
+@bp.route('/view_pending_users')
+@login_required
+def view_pending_users():
+    # Ensure query only gets pending, unapproved users
+    pending_users = User.query.filter_by(
+        is_admin=False, is_approved=False, is_pending=True).all()
+    return render_template('admin/pending_users.html', pending_users=pending_users)
+
+
+@bp.route('/view_normal_users', methods=['GET', 'POST'])
+@login_required
+def view_normal_users():
+    search_query = request.args.get('search', '')  # Get search query from URL
+    page = request.args.get('page', 1, type=int)  # Get the current page
+
+    # Base query for normal users
+    query = User.query.filter_by(is_admin=False, is_approved=True)
+
+    # Apply search filter if query is present
+    if search_query:
+        query = query.filter(
+            (User.username.ilike(f'%{search_query}%')) |
+            (User.matricule.ilike(f'%{search_query}%'))
+        )
+
+    # Paginate the results
+    pagination = query.paginate(page=page, per_page=10)
+
+    # Pass both normal_users and pagination to the template
+    return render_template(
+        'admin/normal_users.html',
+        normal_users=pagination.items,
+        search_query=search_query,
+        pagination=pagination
+    )

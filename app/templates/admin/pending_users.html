@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Users</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <h1>Pending Users (Awaiting Validation)</h1>
+    <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Fonction</th>
+                <th>Matricule</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Shift</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in pending_users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{user.prenom}}</td>
+                <td>{{user.fonction}}</td>
+                <td>{{ user.matricule }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('admin.add_shift', user_id=user.id) }}">
+                        <label for="shift">Select Shift:</label>
+                        <select id="shift" name="shift">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                        <input type="submit" value="Assign Shift">
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="{{ url_for('admin.approve_user', user_id=user.id) }}">
+                        <button type="submit" name="action" value="approve">Approve</button>
+                        <button type="submit" name="action" value="reject">Reject</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('admin.admin') }}" class="btn btn-secondary">Back to Admin Panel</a>
+</body>
+
+</html>

@@ -122,8 +122,26 @@ def add_affectation():
 @login_required
 def view_user_tasks(user_id):
     user = User.query.get_or_404(user_id)
-    tasks = Todo.query.filter_by(user_id=user_id).all()
 
+    # Get the current page number from the query string or default to 1
+    page = request.args.get('page', 1, type=int)
+
+    # Retrieve search parameters (year and month) from query string
+    search_year = request.args.get('year', type=int)
+    search_month = request.args.get('month', type=int)
+
+    # Start building the query for tasks
+    query = Todo.query.filter_by(user_id=user_id)
+
+    # Apply search filters if year and month are provided
+    if search_year and search_month:
+        query = query.filter(db.extract('year', Todo.date_created) == search_year,
+                             db.extract('month', Todo.date_created) == search_month)
+
+    # Paginate the tasks
+    tasks = query.paginate(page=page, per_page=10)
+
+    # Handle POST request (validation/rejection of tasks)
     if request.method == 'POST':
         task_id = request.form.get('task_id')
         action = request.form.get('action')
@@ -132,33 +150,34 @@ def view_user_tasks(user_id):
         task = Todo.query.get(task_id)
         if not task:
             flash('Task not found.', 'danger')
-            return redirect(url_for('tasks.view_user_tasks', user_id=user_id))
+            return redirect(url_for('tasks.view_user_tasks', user_id=user_id, page=page))
 
-        if action == 'validate':
-            if task.status == 'Rejected' and task.validated_by != current_user.username:
-                flash(
-                    'This task has already been rejected by another admin. You cannot modify it.', 'danger')
-            else:
+        # Check task status and apply actions
+        if task.status == 'Rejected' and task.validated_by != current_user.username:
+            flash(
+                'This task has already been rejected by another admin. You cannot modify it.', 'danger')
+        else:
+            if action == 'validate':
                 task.status = 'Validated'
                 task.validated_by = current_user.username
                 task.remark = remark
                 flash('Task validated successfully.', 'success')
-        elif action == 'reject':
-            if task.status == 'Rejected' and task.validated_by != current_user.username:
-                flash(
-                    'This task has already been rejected by another admin. You cannot modify it.', 'danger')
-            else:
+            elif action == 'reject':
                 task.status = 'Rejected'
                 task.validated_by = current_user.username
                 task.remark = remark
                 flash('Task rejected successfully.', 'success')
-        else:
-            flash('Invalid action.', 'danger')
+            else:
+                flash('Invalid action.', 'danger')
 
+        # Commit changes to the database
         db.session.commit()
-        return redirect(url_for('tasks.view_user_tasks', user_id=user_id))
 
-    return render_template('view_tasks.html', user=user, tasks=tasks)
+        # Redirect to the same page to reflect the changes, keeping the pagination
+        return redirect(url_for('tasks.view_user_tasks', user_id=user_id, page=page))
+
+    # Render the template with the user, paginated tasks, and search values
+    return render_template('view_tasks.html', user=user, tasks=tasks, search_year=search_year, search_month=search_month)
 
 
 @bp.route('/validate_task/<int:task_id>/<string:action>', methods=['POST'])

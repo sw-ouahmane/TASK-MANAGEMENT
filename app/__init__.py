@@ -44,8 +44,12 @@ def create_app():
     # Create default admin
     with app.app_context():
         # Be cautious with these lines in production
+        """
+
         db.drop_all()
         db.create_all()
+        """
+
         create_default_admin()
 
     return app

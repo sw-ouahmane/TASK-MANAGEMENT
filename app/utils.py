@@ -18,6 +18,7 @@ def create_default_admin():
             password=hashed_password,
             is_admin=True,
             is_super_admin=True  # Mark as super admin
+
         )
         try:
             db.session.add(new_admin)

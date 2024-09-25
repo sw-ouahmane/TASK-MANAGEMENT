@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <h1>Admin Panel</h1>
+
+    <!-- Personalized welcome message -->
+    <h2>Welcome {{ current_user.username }} in your space!</h2>
+
+    <!-- Button to add a new admin (only visible to super admin) -->
+    {% if current_user.is_super_admin %}
+    <a href="{{ url_for('admin.add_admin') }}" class="btn btn-primary">Add New Admin</a>
+    <a href="{{ url_for('admin.view_admins') }}" class="btn btn-primary">View Admins</a>
+    {% endif %}
+
+    <!-- Admin Control Panel with buttons -->
+    <div class="admin-options">
+        <h3>Admin Control Panel</h3>
+        <a href="{{ url_for('admin.view_pending_users') }}" class="btn btn-primary">View Pending Users</a>
+        <a href="{{ url_for('admin.view_normal_users') }}" class="btn btn-primary">View Normal Users</a>
+    </div>
+
+
+    <!-- Make sure the if block is closed here -->
+
+    <!-- Button to log out -->
+    <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">Logout</a>
+    <a href="{{ url_for('admin.admin_change_password') }}" class="btn btn-secondary">Change Password</a>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+
+</html>
