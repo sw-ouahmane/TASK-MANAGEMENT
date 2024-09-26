@@ -54,11 +54,13 @@ def update(id):
         task.date = request.form['date']
         task.shift = request.form['shift']
         task.poste = request.form['poste']
+        task.grue = request.form['grue']  # Match the HTML field name
         task.navire = request.form['navire']
         task.marchandise = request.form['marchandise']
         task.nb_cs_pcs = request.form['nb_cs_pcs']
         task.unite = request.form['unite']
         task.raclage = request.form['raclage']
+        task.comentaire = request.form['comentaire']
 
         try:
             db.session.commit()
@@ -78,11 +80,13 @@ def add_affectation():
             date_str = request.form.get('date')
             shift = request.form.get('shift')
             poste = request.form.get('poste')
+            grue = request.form.get('grue')
             navire = request.form.get('navire')
             marchandise = request.form.get('marchandise')
             nb_cs_pcs = request.form.get('nb_cs_pcs')
             unite = request.form.get('unite')
             raclage = request.form.get('raclage')
+            comentaire = request.form.get('comentaire')
 
             # Ensure 'current_user' is used
             user_id = current_user.id
@@ -95,11 +99,13 @@ def add_affectation():
                 content=None,  # Adjust this as needed
                 shift=shift,
                 poste=poste,
+                grue=grue,
                 navire=navire,
                 marchandise=marchandise,
                 nb_cs_pcs=nb_cs_pcs,
                 unite=unite,
                 raclage=raclage,
+                comentaire=comentaire,
                 date_created=date_created,
                 user_id=user_id
             )

@@ -37,11 +37,13 @@
                 <th>Date</th>
                 <th>Shift</th>
                 <th>Poste</th>
+                <th>Grue</th>
                 <th>Navire</th>
                 <th>Marchandise</th>
                 <th>Nb de cs / pcs</th>
                 <th>Unité</th>
                 <th>Raclage</th>
+                <th>Commentaire</th>
                 <th>Actions</th>
                 <th>Status</th>
                 <th>Remarque</th>
@@ -52,11 +54,13 @@
                 <td>{{ task.date_created.date() }}</td>
                 <td>{{ task.shift }}</td>
                 <td>{{ task.poste }}</td>
+                <td>{{ task.grue }}</td>
                 <td>{{ task.navire }}</td>
                 <td>{{ task.marchandise }}</td>
                 <td>{{ task.nb_cs_pcs }}</td>
                 <td>{{ task.unite }}</td>
                 <td>{{ task.raclage }}</td>
+                <td>{{task.comentaire}}</td>
                 <td>
                     <a href="/delete/{{ task.id }}">Delete</a>
                     <br>

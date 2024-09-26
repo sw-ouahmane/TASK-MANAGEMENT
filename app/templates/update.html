@@ -16,11 +16,13 @@
                         <th>Date</th>
                         <th>Shift</th>
                         <th>Poste</th>
+                        <th>Grue</th>
                         <th>Navire</th>
                         <th>Marchandise</th>
                         <th>Nb de cs / pcs</th>
                         <th>Unité</th>
                         <th>Raclage</th>
+                        <th>Comentaire</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,16 +30,20 @@
                         <td><input type="text" name="date" value="{{ task.date }}"></td>
                         <td><input type="text" name="shift" value="{{ task.shift }}"></td>
                         <td><input type="text" name="poste" value="{{ task.poste }}"></td>
+                        <td><input type="text" name="grue" value="{{ task.grue }}"></td>
+                        <!-- Corrected from 'Grue' to 'grue' -->
                         <td><input type="text" name="navire" value="{{ task.navire }}"></td>
                         <td><input type="text" name="marchandise" value="{{ task.marchandise }}"></td>
                         <td><input type="text" name="nb_cs_pcs" value="{{ task.nb_cs_pcs }}"></td>
                         <td><input type="text" name="unite" value="{{ task.unite }}"></td>
                         <td><input type="text" name="raclage" value="{{ task.raclage }}"></td>
+                        <td><input type="text" name="comentaire" value="{{ task.comentaire }}"></td>
                     </tr>
                 </tbody>
             </table>
             <input type="submit" value="Update">
         </form>
+
     </div>
 </div>
 {% endblock %}

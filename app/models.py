@@ -45,10 +45,12 @@ class Todo(db.Model):
     shift = db.Column(db.String(50))
     poste = db.Column(db.String(50))
     navire = db.Column(db.String(50))
+    grue = db.Column(db.String(50))
     marchandise = db.Column(db.String(50))
     nb_cs_pcs = db.Column(db.String(50))
     unite = db.Column(db.String(50))
     raclage = db.Column(db.String(50))
+    comentaire = db.Column(db.String(50))
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Foreign key relationship to User model

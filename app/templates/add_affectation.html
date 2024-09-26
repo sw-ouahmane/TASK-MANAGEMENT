@@ -16,23 +16,70 @@
                     <th>Date</th>
                     <th>Shift</th>
                     <th>Poste</th>
+                    <th>Grue</th>
                     <th>Navire</th>
                     <th>Marchandise</th>
                     <th>Nb de cs / pcs</th>
                     <th>Unité</th>
                     <th>Raclage</th>
+                    <th>Commentaire</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><input type="text" name="date" placeholder="Date" required></td>
-                    <td><input type="text" name="shift" placeholder="Shift"></td>
-                    <td><input type="text" name="poste" placeholder="Poste"></td>
+                    <td>
+                        <select name="shift">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="poste">
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="T3T4">T3T4</option>
+                            <option value="36">36</option>
+                            <option value="35">35</option>
+                            <option value="34">34</option>
+                            <option value="33">33</option>
+                            <option value="32">32</option>
+                            <option value="31">31</option>
+                            <option value="30">30</option>
+                            <option value="R2">R2</option>
+                            <option value="R4">R4</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="grue">
+                            <option value="M630001">M630001</option>
+                            <option value="M630002">M630002</option>
+                            <option value="G400001">G400001</option>
+                            <option value="G400002">G400002</option>
+                            <option value="G400003">G400003</option>
+                            <option value="G400004">G400004</option>
+                            <option value="G400005">G400005</option>
+                            <option value="G400006">G400006</option>
+                            <option value="G380001">G380001</option>
+                            <option value="G380002">G380002</option>
+                            <option value="G380003">G380003</option>
+                            <option value="G380004">G380004</option>
+                        </select>
+                    </td>
                     <td><input type="text" name="navire" placeholder="Navire"></td>
                     <td><input type="text" name="marchandise" placeholder="Marchandise"></td>
                     <td><input type="text" name="nb_cs_pcs" placeholder="Nb de cs / pcs"></td>
                     <td><input type="text" name="unite" placeholder="Unité"></td>
-                    <td><input type="text" name="raclage" placeholder="Raclage"></td>
+                    <td>
+                        <select name="raclage">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </td>
+                    <td><input type="text" name="comentaire" placeholder="comentaire"></td>
+
                 </tr>
             </tbody>
         </table>

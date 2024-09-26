@@ -22,11 +22,13 @@
                 <th>Date d'Affectation</th>
                 <th>Shift</th>
                 <th>Poste</th>
+                <th>Grue</th>
                 <th>Navire</th>
                 <th>Marchandise</th>
                 <th>Nb CS/PCS</th>
                 <th>Unite</th>
                 <th>Raclage</th>
+                <th>Comentaire User</th>
                 <th>Entered By</th>
                 <th>Validated By</th>
                 <th>Escale</th>
@@ -40,11 +42,13 @@
                 <td>{{ task.date_created.strftime('%d/%m/%Y') }}</td>
                 <td>{{ task.shift }}</td>
                 <td>{{ task.poste }}</td>
+                <td>{{ task.grue }}</td>
                 <td>{{ task.navire }}</td>
                 <td>{{ task.marchandise }}</td>
                 <td>{{ task.nb_cs_pcs }}</td>
                 <td>{{ task.unite }}</td>
                 <td>{{ task.raclage }}</td>
+                <td>{{task.comentaire}}</td>
                 <td>{{ task.user.username }}</td>
                 <td>{{ task.validated_by or 'Not validated yet' }}</td>
                 <td>

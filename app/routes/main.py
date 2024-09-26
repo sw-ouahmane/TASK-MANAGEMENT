@@ -23,11 +23,13 @@ def index():
         task_date = request.form.get('date')
         task_shift = request.form.get('shift')
         task_poste = request.form.get('poste')
+        task_grue = request.form.get('grue')
         task_navire = request.form.get('navire')
         task_marchandise = request.form.get('marchandise')
         task_nb_cs_pcs = request.form.get('nb_cs_pcs')
         task_unite = request.form.get('unite')
         task_raclage = request.form.get('raclage')
+        task_comentaire = request.form.get('comentaire')
 
         if not task_date or not task_shift or not task_poste or not task_navire or not task_marchandise or not task_nb_cs_pcs or not task_unite or not task_raclage:
             return 'All fields are required.'
@@ -36,11 +38,13 @@ def index():
             content=task_date,  # Example, modify as needed
             shift=task_shift,
             poste=task_poste,
+            grue=task_grue,
             navire=task_navire,
             marchandise=task_marchandise,
             nb_cs_pcs=task_nb_cs_pcs,
             unite=task_unite,
             raclage=task_raclage,
+            comentaire=task_comentaire,
             user_id=current_user.id
         )
 
