@@ -4,34 +4,67 @@ html {
     font-family: sans-serif;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 .content {
     margin: 0 auto;
     width: 100%;
-    /* Ensure the content takes full available width */
     max-width: 1200px;
-    /* Set a max-width if necessary */
+    /* Set a max-width */
+    padding: 20px;
+    /* Optional: Add padding for spacing */
+    box-sizing: border-box;
+    /* Include padding in total width */
+    overflow: hidden;
+    /* Hide overflowing content */
+    overflow-x: auto;
+    /* Allow horizontal scrolling if needed */
 }
-
 
 table {
     border-collapse: collapse;
     margin: 0 auto;
-    /* Center the table horizontally */
     width: 100%;
-    /* Use full width of .content */
-    /* Optionally set max-width if needed */
+    max-width: 100%;
+    height: auto;
+    /* Allow dynamic height */
+    overflow: hidden;
+    display: block;
+    /* Allow scrolling on smaller screens */
+
 }
 
-td,
-th {
-    border: 1px solid #aaa;
-    text-align: center;
-    padding: 5px;
+/* Optional: Style for table cells and headers */
+th,
+td {
+    padding: 10px;
+    /* Add padding inside cells */
+    text-align: left;
+    /* Align text in cells */
+    border: 1px solid #ddd;
+    /* Add a light border for visibility */
 }
 
 th {
-    height: 30px;
+    background-color: #f2f2f2;
+    /* Light background for headers */
 }
+
+/* Optional: Adjustments for responsiveness */
+@media (max-width: 600px) {
+    table {
+        width: 100%;
+        /* Ensure full width on small screens */
+        display: block;
+        /* Allow scrolling */
+        overflow-x: auto;
+        /* Add horizontal scrolling if needed */
+    }
+}
+
+
 
 .form {
     margin-top: 20px;
@@ -158,4 +191,14 @@ footer .footer-links a:hover {
 .pagination a:hover {
     background-color: #0056b3;
     color: white;
+}
+
+
+
+.table a:hover,
+.form .button:hover {
+    background-color: #0056b3;
+    /* Add a darker shade on hover */
+    color: #fff;
+    /* Change text color to white */
 }

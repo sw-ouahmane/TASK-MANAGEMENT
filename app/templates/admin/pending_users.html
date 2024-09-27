@@ -20,7 +20,7 @@
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Shift</th>
-                <th>Action</th>
+
             </tr>
         </thead>
         <tbody>
@@ -33,22 +33,22 @@
                 <td>{{ user.phone }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                    <form method="POST" action="{{ url_for('admin.add_shift', user_id=user.id) }}">
+                    <form method="POST" action="{{ url_for('admin.approve_user', user_id=user.id) }}">
                         <label for="shift">Select Shift:</label>
                         <select id="shift" name="shift">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
                         </select>
-                        <input type="submit" value="Assign Shift">
+                        <input type="hidden" name="action" value="approve">
+                        <button type="submit">Approve User</button>
                     </form>
-                </td>
-                <td>
                     <form method="POST" action="{{ url_for('admin.approve_user', user_id=user.id) }}">
-                        <button type="submit" name="action" value="approve">Approve</button>
-                        <button type="submit" name="action" value="reject">Reject</button>
+                        <input type="hidden" name="action" value="reject">
+                        <button type="submit">Reject User</button>
                     </form>
                 </td>
+
             </tr>
             {% endfor %}
         </tbody>

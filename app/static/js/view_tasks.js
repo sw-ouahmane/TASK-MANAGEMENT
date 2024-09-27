@@ -19,3 +19,10 @@ $('#remarkModal').on('show.bs.modal', function (event) {
     modal.find('#task-id').val(taskId); // Set the task ID in hidden input
     modal.find('#action').val(action); // Set the action in hidden input
 });
+
+document.getElementById('Escale').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();  // Prevent default form submission
+        document.getElementById('escale-form').submit();  // Submit the form automatically
+    }
+});

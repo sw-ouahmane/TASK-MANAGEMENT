@@ -20,6 +20,7 @@ def home():
 @login_required
 def index():
     if request.method == 'POST':
+        # Task creation logic
         task_date = request.form.get('date')
         task_shift = request.form.get('shift')
         task_poste = request.form.get('poste')
@@ -31,11 +32,12 @@ def index():
         task_raclage = request.form.get('raclage')
         task_comentaire = request.form.get('comentaire')
 
-        if not task_date or not task_shift or not task_poste or not task_navire or not task_marchandise or not task_nb_cs_pcs or not task_unite or not task_raclage:
+        # Validate required fields
+        if not all([task_date, task_shift, task_poste, task_navire, task_marchandise, task_nb_cs_pcs, task_unite, task_raclage]):
             return 'All fields are required.'
 
         new_task = Todo(
-            content=task_date,  # Example, modify as needed
+            content=task_date,  # Modify as needed
             shift=task_shift,
             poste=task_poste,
             grue=task_grue,
@@ -56,10 +58,12 @@ def index():
             return f'There was an issue adding your task: {e}'
 
     else:
+        # Handle GET request for filtering tasks
         page = request.args.get('page', 1, type=int)
         year = request.args.get('year')
         month = request.args.get('month')
 
+        # Start with a base query for the user's tasks
         query = Todo.query.filter_by(user_id=current_user.id)
 
         # Filter by year and month if provided
@@ -69,6 +73,9 @@ def index():
                 db.extract('month', Todo.date_created) == month
             )
 
+        # Paginate the results
         tasks = query.order_by(Todo.date_created).paginate(
-            page=page, per_page=10)  # Adjust per_page as needed
+            page=page, per_page=10  # Adjust per_page as needed
+        )
+
         return render_template('index.html', tasks=tasks, user=current_user)

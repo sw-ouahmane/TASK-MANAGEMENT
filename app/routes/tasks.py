@@ -194,7 +194,13 @@ def validate_task(task_id, action):
         return redirect(url_for('tasks.view_user_tasks', user_id=current_user.id))
 
     task = Todo.query.get_or_404(task_id)
+    # Get the Escale input from the form
+    escale = request.form.get('Escale', '')
     remark = request.form.get('remark', '')
+
+    # Update the task with the Escale value
+    if escale:
+        task.Escale = escale
 
     # Identify the initial admin created at app startup
     initial_admin_matricule = 'ADMIN0001'
@@ -215,7 +221,6 @@ def validate_task(task_id, action):
             task.status = 'Validated'
             task.is_validated = True
             task.remark = remark
-            # Update with current admin's username
             task.validated_by = current_user.username
         elif task.is_validated or task.status == 'Rejected':
             pass  # No action allowed if processed by another admin
@@ -234,7 +239,6 @@ def validate_task(task_id, action):
             task.status = 'Rejected'
             task.is_validated = False  # Set to False if rejected
             task.remark = remark
-            # Update with current admin's username
             task.validated_by = current_user.username
         elif task.is_validated or task.status == 'Rejected':
             pass  # No action allowed if processed by another admin

@@ -52,11 +52,12 @@
                 <td>{{ task.user.username }}</td>
                 <td>{{ task.validated_by or 'Not validated yet' }}</td>
                 <td>
-                    <!-- Form for adding Escale -->
-                    <form action="{{ url_for('tasks.add_escale', task_id=task.id) }}" method="POST">
-                        <input type="text" name="Escale" placeholder="Enter numero d'escale"
+                    <!-- Form for adding Escale and validating task on Enter keypress -->
+                    <form id="escale-form"
+                        action="{{ url_for('tasks.validate_task', task_id=task.id, action='validate') }}" method="POST">
+                        <input type="text" name="Escale" id="Escale" placeholder="Enter numero d'escale"
                             value="{{ task.Escale or '' }}">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <input type="hidden" name="remark" value="">
                     </form>
                 </td>
                 <td>
@@ -164,6 +165,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
     <!-- JavaScript to handle modal actions -->
     <script src="{{ url_for('static', filename='js/view_tasks.js') }}"></script>

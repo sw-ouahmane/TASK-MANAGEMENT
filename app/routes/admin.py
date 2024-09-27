@@ -193,39 +193,28 @@ def approve_user(user_id):
         return redirect(url_for('auth.login'))
 
     user = User.query.get_or_404(user_id)
+
     if request.form['action'] == 'approve':
-        user.is_approved = True
-        user.is_pending = False  # Ensure they are no longer pending
-        db.session.commit()
-        # Stay on the pending users page after approval
-        # Update this line to remain on the same page
-        return redirect(url_for('admin.view_pending_users'))
-    elif request.form['action'] == 'reject':
-        db.session.delete(user)
-        db.session.commit()
-        # Remain on the same page
-        return redirect(url_for('admin.view_pending_users'))
-
-
-@bp.route('/add_shift/<int:user_id>', methods=['GET', 'POST'])
-@login_required
-def add_shift(user_id):
-    user = User.query.get_or_404(user_id)
-
-    if request.method == 'POST':
+        # Assign the shift only if the user is approved
         shift = request.form.get('shift')
-
         if shift in ['A', 'B', 'C']:
             user.shift = shift
+            user.is_approved = True
+            user.is_pending = False  # Ensure the user is no longer pending
             db.session.commit()
-            flash(f'Shift {shift} assigned to {user.username}.', 'success')
+            flash(
+                f'User {user.username} approved and assigned to Shift {shift}.', 'success')
         else:
             flash('Invalid shift selection.', 'danger')
 
-        return redirect(url_for('admin.add_shift', user_id=user_id))
+    elif request.form['action'] == 'reject':
+        # If the user is rejected, remove them from the database
+        db.session.delete(user)
+        db.session.commit()
+        flash(f'User {user.username} has been rejected.', 'info')
 
-    # Handle GET request (e.g., display a form)
-    return render_template('admin/admin.html', user=user)
+    # Redirect back to the pending users page
+    return redirect(url_for('admin.view_pending_users'))
 
 
 @bp.route('/view_admins')
