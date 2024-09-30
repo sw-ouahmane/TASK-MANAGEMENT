@@ -16,9 +16,15 @@ def home():
     return render_template('home.html')
 
 
-@bp.route('/index', methods=['GET', 'POST'])
-@login_required
+@bp.route('/index')
+@login_required  # Ensure the user is logged in
 def index():
+    return render_template('index.html', user=current_user)
+
+
+@bp.route('/task_master', methods=['GET', 'POST'])
+@login_required
+def task_master():
     if request.method == 'POST':
         # Task creation logic
         task_date = request.form.get('date')
@@ -53,7 +59,7 @@ def index():
         try:
             db.session.add(new_task)
             db.session.commit()
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.task_master'))
         except Exception as e:
             return f'There was an issue adding your task: {e}'
 
@@ -78,4 +84,4 @@ def index():
             page=page, per_page=10  # Adjust per_page as needed
         )
 
-        return render_template('index.html', tasks=tasks, user=current_user)
+        return render_template('task_master.html', tasks=tasks, user=current_user)

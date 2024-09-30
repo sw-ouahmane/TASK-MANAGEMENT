@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 style="text-align: center">Conference Data</h1>
+
+{% if current_user.is_authenticated %}
+<p style="text-align: center">
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
+</p>
+{% endif %}
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Conference File Name</th>
+                <th>Date Added</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in uploaded_files %}
+            <tr>
+                <td>{{ file.filename }}</td>
+                <td>{{ file.upload_time }}</td>
+                <td>
+                    <!-- Link to open the file and view it as an HTML table -->
+                    <a href="{{ url_for('admin.view_conference', filename=file.filename) }}"
+                        class="btn btn-primary">Open</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add a 'Back to Upload' button for navigation -->
+<a href="{{ url_for('admin.load_conference') }}" class="btn btn-secondary">Back to Upload</a>
+
+{% endblock %}

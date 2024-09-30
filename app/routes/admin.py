@@ -1,3 +1,11 @@
+from openpyxl import load_workbook
+from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, send_file
+from flask import send_file, abort
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import send_from_directory, current_app
+import pandas as pd
+from flask import request, flash, redirect, url_for
 from app.models import db
 from app.models import Todo, User
 from flask import request, render_template, url_for
@@ -11,6 +19,9 @@ from datetime import datetime
 from flask import Blueprint
 from flask import current_app
 from flask_login import login_required, current_user
+from flask import send_file
+from flask import Flask, render_template
+import xlrd
 
 bp = Blueprint('admin', __name__)
 
@@ -258,3 +269,125 @@ def view_normal_users():
         search_query=search_query,
         pagination=pagination
     )
+
+
+"""
+@bp.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    # This uses current_app.root_path to access the main app directory
+    uploads_directory = os.path.join(current_app.root_path, '..', 'uploads')
+    return send_from_directory(uploads_directory, filename)
+"""
+
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+
+
+@bp.route('/load_conference', methods=['GET', 'POST'])
+@login_required
+def load_conference():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part. Please choose a file to upload.')
+            return redirect(request.url)
+
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file. Please choose a file to upload.')
+            return redirect(request.url)
+
+        if file and file.filename.lower().endswith(('.xlsx', '.xls')):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(file_path)
+
+            upload_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            uploaded_files = session.get('uploaded_files', [])
+            uploaded_files.append(
+                {'filename': filename, 'filepath': file_path,
+                    'upload_time': upload_time}
+            )
+            session['uploaded_files'] = uploaded_files
+
+            flash('File successfully uploaded and processed.')
+            return redirect(url_for('admin.load_conference'))
+
+        flash(
+            'Invalid file type. Please upload an Excel file with .xlsx or .xls extension.')
+
+    uploaded_files = session.get('uploaded_files', [])
+    return render_template('admin/load_conference.html', user=current_user, uploaded_files=uploaded_files)
+
+
+@bp.route('/open_file/<filename>', methods=['GET'])
+@login_required
+def open_file(filename):
+    # Construct the file path
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+
+    # Check if file exists
+    if not os.path.exists(file_path):
+        flash(f'File {filename} not found.')
+        return redirect(url_for('admin.load_conference'))
+
+    # Return the file for download
+    try:
+        return send_file(file_path)
+    except Exception as e:
+        flash(f'Error opening file: {str(e)}')
+        return redirect(url_for('admin.load_conference'))
+
+
+@bp.route('/conference', methods=['GET'])
+@login_required
+def conference():
+    # Get the list of uploaded files from the session
+    uploaded_files = session.get('uploaded_files', [])
+    if not uploaded_files:
+        flash('No uploaded conference files found.')
+
+    # Render the 'conference.html' to list uploaded files
+    return render_template('conference.html', user=current_user, uploaded_files=uploaded_files)
+
+
+@bp.route('/view_conference/<filename>')
+def view_conference(filename):
+    file_path = os.path.join('uploads', filename)
+
+    # Check if the file exists
+    if os.path.exists(file_path):
+        content = []  # Initialize content
+
+        if filename.endswith('.xls'):
+            print("Using xlrd for .xls file")
+            try:
+                workbook = xlrd.open_workbook(file_path)
+                sheet = workbook.sheet_by_index(0)  # Read the first sheet
+
+                # Iterate over rows to gather content
+                for row_idx in range(sheet.nrows):
+                    row = sheet.row_values(row_idx)
+                    content.append(row)
+
+            except Exception as e:
+                return f"Error reading .xls file: {e}"
+
+        elif filename.endswith('.xlsx'):
+            print("Using openpyxl for .xlsx file")
+            try:
+                workbook = load_workbook(file_path)
+                sheet = workbook.active  # Read the active sheet
+
+                # Iterate over rows to gather content
+                for row in sheet.iter_rows(values_only=True):
+                    content.append(row)
+
+            except Exception as e:
+                return f"Error reading .xlsx file: {e}"
+
+        else:
+            return "Unsupported file format.", 400  # Bad Request
+
+        return render_template('view_conference.html', content=content)
+    else:
+        return "File does not exist.", 404  # Not Found

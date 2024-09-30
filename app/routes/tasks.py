@@ -32,7 +32,7 @@ def delete(id):
     try:
         db.session.delete(task_to_delete)
         db.session.commit()
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.task_master'))
     except Exception as e:
         return f'There was a problem deleting that task: {e}'
 
@@ -64,7 +64,7 @@ def update(id):
 
         try:
             db.session.commit()
-            return redirect(url_for('main.index'))  # Redirect to 'index'
+            return redirect(url_for('main.task_master'))  # Redirect to 'index'
         except Exception as e:
             return f'There was an issue updating your task: {e}'
 
@@ -114,7 +114,7 @@ def add_affectation():
             db.session.add(new_task)
             db.session.commit()
 
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.task_master'))
 
         except Exception as e:
             # Print the error for debugging
