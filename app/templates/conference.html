@@ -24,9 +24,9 @@
                 <td>{{ file.filename }}</td>
                 <td>{{ file.upload_time }}</td>
                 <td>
-                    <!-- Link to open the file and view it as an HTML table -->
-                    <a href="{{ url_for('admin.view_conference', filename=file.filename) }}"
-                        class="btn btn-primary">Open</a>
+                    <!-- Link to download the file -->
+                    <a href="{{ url_for('admin.download_conference', filename=file.filename) }}"
+                        class="btn btn-primary">Download</a>
                 </td>
             </tr>
             {% endfor %}
@@ -35,6 +35,10 @@
 </div>
 
 <!-- Add a 'Back to Upload' button for navigation -->
+{% if current_user.is_authenticated and current_user.is_admin %}
 <a href="{{ url_for('admin.load_conference') }}" class="btn btn-secondary">Back to Upload</a>
+{% else %}
+<a href="{{ url_for('main.index') }}" class="btn btn-secondary">Back to Upload</a>
+{% endif %}
 
 {% endblock %}

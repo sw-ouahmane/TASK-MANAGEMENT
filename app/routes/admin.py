@@ -1,3 +1,5 @@
+from flask import send_file, Blueprint
+import openpyxl
 from openpyxl import load_workbook
 from flask import Blueprint, render_template
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, send_file
@@ -22,6 +24,8 @@ from flask_login import login_required, current_user
 from flask import send_file
 from flask import Flask, render_template
 import xlrd
+import openpyxl  # For .xlsx files
+
 
 bp = Blueprint('admin', __name__)
 
@@ -350,44 +354,21 @@ def conference():
     return render_template('conference.html', user=current_user, uploaded_files=uploaded_files)
 
 
-@bp.route('/view_conference/<filename>')
-def view_conference(filename):
-    file_path = os.path.join('uploads', filename)
+@bp.route('/download_conference/<filename>', methods=['GET'])
+def download_conference(filename):
+    # Construct the file path
+    file_path = os.path.join(os.getcwd(), 'uploads', filename)
 
     # Check if the file exists
-    if os.path.exists(file_path):
-        content = []  # Initialize content
+    if not os.path.exists(file_path):
+        return "File not found", 404
 
-        if filename.endswith('.xls'):
-            print("Using xlrd for .xls file")
-            try:
-                workbook = xlrd.open_workbook(file_path)
-                sheet = workbook.sheet_by_index(0)  # Read the first sheet
-
-                # Iterate over rows to gather content
-                for row_idx in range(sheet.nrows):
-                    row = sheet.row_values(row_idx)
-                    content.append(row)
-
-            except Exception as e:
-                return f"Error reading .xls file: {e}"
-
-        elif filename.endswith('.xlsx'):
-            print("Using openpyxl for .xlsx file")
-            try:
-                workbook = load_workbook(file_path)
-                sheet = workbook.active  # Read the active sheet
-
-                # Iterate over rows to gather content
-                for row in sheet.iter_rows(values_only=True):
-                    content.append(row)
-
-            except Exception as e:
-                return f"Error reading .xlsx file: {e}"
-
-        else:
-            return "Unsupported file format.", 400  # Bad Request
-
-        return render_template('view_conference.html', content=content)
+    # Check the file extension and send the file as an attachment
+    if filename.endswith('.xlsx') or filename.endswith('.xls'):
+        try:
+            return send_file(file_path, as_attachment=True)
+        except Exception as e:
+            print(f"Error sending file: {e}")
+            return "Error sending file", 500
     else:
-        return "File does not exist.", 404  # Not Found
+        return "Unsupported file format", 400

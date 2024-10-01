@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Task Master</title>
+<title>Panel Utilisateur</title>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
@@ -32,7 +32,7 @@
 
     <div class="text-center mt-4">
         <a href="{{ url_for('main.task_master') }}" class="btn btn-primary">Go to Task Master</a>
-        <a href="{{ url_for('main.task_master') }}" class="btn btn-primary">Conference</a>
+        <a href="{{ url_for('admin.conference') }}" class="btn btn-primary">Conference</a>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
